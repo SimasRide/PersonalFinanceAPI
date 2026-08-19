@@ -1,4 +1,7 @@
 <Solution>
-  <Folder Name="/Workspace/" />
+  <Folder Name="/Itens de Solução/">
+    <File Path=".env" />
+    <File Path="docker-compose.yml" />
+  </Folder>
   <Project Path="WebApplication1/WebApplication1.csproj" />
 </Solution>
