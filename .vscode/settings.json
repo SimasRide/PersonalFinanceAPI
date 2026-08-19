@@ -1,3 +1,4 @@
 {
-    "dotnet.defaultSolution": "WebApplication1.slnx"
+    "dotnet.defaultSolution": "WebApplication1.slnx",
+    "csharp-dev-tools.build.configuration": "Debug"
 }
