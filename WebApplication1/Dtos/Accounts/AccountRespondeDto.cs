@@ -5,7 +5,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Dtos.Accounts
 {
-    public sealed record AccountRespondeDto(
+    public sealed record AccountResponseDto(
         int Id,
     string Name,
    AccountType Type,
