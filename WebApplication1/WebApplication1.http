@@ -1,6 +1,16 @@
-@WebApplication1_HostAddress = http://localhost:5287
+@host = http://localhost:5287
 
-GET {{WebApplication1_HostAddress}}/weatherforecast/
+### Criar conta
+POST {{host}}/api/accounts
+Content-Type: application/json
+
+{
+  "name": "Conta Principal",
+  "type": 1,
+  "initialBalance": 1500.00,
+  "currency": "EUR"
+}
+
+### Listar contas
+GET {{host}}/api/accounts
 Accept: application/json
-
-###

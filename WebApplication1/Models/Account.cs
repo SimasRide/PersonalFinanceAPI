@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+// Usings padrão para este modelo
+
+
+
 
 namespace WebApplication1.Models
 {
@@ -13,7 +17,7 @@ namespace WebApplication1.Models
         public decimal InitialBalance { get; set; }
 
         public string Currency { get; set; } = "EUR";
-        ICollection<Transaction> Transactions { get; set; }
+        public ICollection<Transaction> Transactions { get; set; }
         = new List<Transaction>();
 
     }

@@ -1,18 +1,37 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using WebApplication1.Models;
 
 namespace WebApplication1.Data;
 
-        public class AppDBContext : DbContext
-        {
-            public AppDBContext(DbContextOptions<AppDBContext> options)
-        : base(options){ }
-    public DbSet <Account> Accounts => Set <Account>();
+// DbContext da aplicação: representa a ligação entre modelos C# e a BD
+public class AppDBContext : DbContext
+{
+    // Construtor padrão que recebe opções (connection string, provider, etc.)
+    public AppDBContext(DbContextOptions<AppDBContext> options)
+        : base(options)
+    {
+    }
 
-    public DbSet <Transaction> Transactions => Set <Transaction>();
-        }
-    
+    // Cada DbSet representa uma tabela na base de dados
+    public DbSet<Account> Accounts => Set<Account>();
 
+    public DbSet<Transaction> Transactions => Set<Transaction>();
+
+    // Configurações do modelo (colunas, relacionamentos, conversões)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        // Guarda o Account.Type (enum) como string na base de dados
+        modelBuilder.Entity<Account>()
+            .Property(account => account.Type)
+            .HasConversion<string>();
+
+        // Define a relação 1 Account -> N Transactions
+        // Transaction.AccountId é a foreign key para Account.Id
+        modelBuilder.Entity<Transaction>()
+            .HasOne(transaction => transaction.BankAccount)
+            .WithMany(account => account.Transactions)
+            .HasForeignKey(transaction => transaction.AccountId);
+    }
+}

@@ -1,11 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
+using System.Text.Json.Serialization;
 
 // Nome da política de CORS usada para permitir chamadas do frontend
 const string FrontendCorsPolicy = "FrontendCorsPolicy";
 
 // Cria o builder da aplicação (configuração, serviços, etc.)
 var builder = WebApplication.CreateBuilder(args);
+
+// Força a aplicação a escutar sempre em http://localhost:5287
+// Isto garante consistência entre arranques no VS e na linha de comandos.
+builder.WebHost.UseUrls("http://localhost:5287");
 
 // Regista a política de CORS para permitir chamadas vindas do frontend
 // Neste caso, apenas permitir origens de http://localhost:5173 (ex.: Vite/React dev)
@@ -21,7 +26,10 @@ builder.Services.AddCors(options =>
 });
 
 // Regista os controllers do ASP.NET Core (endpoints via controllers)
-builder.Services.AddControllers();
+// e configura a serialização para enviar enums como strings no JSON
+builder.Services.AddControllers()
+    .AddJsonOptions(o =>
+        o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 // Obtém a connection string chamada "DefaultConnection" do appsettings
 // Lança exceção se não estiver configurada para evitar falhas silenciosas
@@ -40,13 +48,11 @@ var app = builder.Build();
 // Aplica a política de CORS definida anteriormente
 app.UseCors(FrontendCorsPolicy);
 
-// Linha comentada encontrada no ficheiro original; parecia ser uma URL
-// solta (provocaria erro de compilação). Mantida como comentário para
-// rastreio, caso seja relevante para o autor.
-// https://steamcommunity.com/tradeoffer/new/?partner=1017301327&token=ULC2IdAq
+app.MapGet("/Dashboard", () => Results.Ok(new
+{
+    message = "Financial Overview API is running"
+}));
 
-// Faz o mapeamento dos controllers para as rotas HTTP
 app.MapControllers();
 
-// Inicia a aplicação e começa a escutar pedidos
 app.Run();
