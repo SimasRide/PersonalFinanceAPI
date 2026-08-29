@@ -140,18 +140,8 @@ public class AccountsController : ControllerBase
         _dbContext.Accounts.Add(account);
         Console.WriteLine($"A tentar guardar a conta: {account.Name}");
 
-        try
-        {
-            await _dbContext.SaveChangesAsync();
-        }
-        catch (Exception exception)
-        {
-            return StatusCode(500, new
-            {
-                error = exception.Message,
-                innerError = exception.InnerException?.Message
-            });
-        }
+        // Grava a nova conta. Erros não tratados serão capturados pelo middleware
+        await _dbContext.SaveChangesAsync();
 
         var response = new AccountResponseDto(
             account.Id,
@@ -181,14 +171,8 @@ public class AccountsController : ControllerBase
         account.InitialBalance = request.InitialBalance;
         account.Currency = request.Currency;
 
-        try
-        {
-            await _dbContext.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = ex.Message });
-        }
+        // Grava as alterações; o middleware trata exceções inesperadas
+        await _dbContext.SaveChangesAsync();
 
         // Sucesso sem corpo
         return NoContent();
@@ -204,14 +188,8 @@ public class AccountsController : ControllerBase
 
         _dbContext.Accounts.Remove(account);
 
-        try
-        {
-            await _dbContext.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = ex.Message });
-        }
+        // Remove e grava; o middleware retorna resposta genérica em caso de erro
+        await _dbContext.SaveChangesAsync();
 
         return NoContent();
     }

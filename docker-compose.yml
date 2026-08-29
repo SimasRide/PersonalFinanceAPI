@@ -8,7 +8,7 @@ services:
       POSTGRES_DB: financialoverview
       POSTGRES_USER: postgres
       # Usa a variável de ambiente POSTGRES_PASSWORD ou 'secret' por omissão
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secret}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Eixmwqidsaowmw}
     ports:
       - "5432:5432"
     volumes:
@@ -23,7 +23,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       # Connection string usada pelo EF Core dentro do container
-      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=financialoverview;Username=postgres;Password=${POSTGRES_PASSWORD:-secret}"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=financialoverview;Username=postgres;Password=${POSTGRES_PASSWORD:-Eixmwqidsaowmw}"
       ASPNETCORE_URLS: "http://+:5287"
     ports:
       - "5287:5287"

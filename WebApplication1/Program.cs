@@ -9,8 +9,6 @@ const string FrontendCorsPolicy = "FrontendCorsPolicy";
 var builder = WebApplication.CreateBuilder(args);
 
 // Força a aplicação a escutar sempre em http://localhost:5287
-// Isto garante consistência entre arranques no VS e na linha de comandos.
-builder.WebHost.UseUrls("http://localhost:5287");
 
 // Regista a política de CORS para permitir chamadas vindas do frontend
 // Neste caso, apenas permitir origens de http://localhost:5173 (ex.: Vite/React dev)
@@ -47,6 +45,9 @@ var app = builder.Build();
 
 // Aplica a política de CORS definida anteriormente
 app.UseCors(FrontendCorsPolicy);
+
+// Regista o middleware global de tratamento de erros
+app.UseMiddleware<WebApplication1.Middleware.ErrorHandlingMiddleware>();
 
 app.MapGet("/Dashboard", () => Results.Ok(new
 {
