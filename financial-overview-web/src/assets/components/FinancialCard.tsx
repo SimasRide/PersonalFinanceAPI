@@ -1,4 +1,4 @@
-import Logo from './Logo'
+
 
 function Footer() {
   return (
@@ -7,7 +7,7 @@ function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <a className="brand" href="#top">
-              <Logo />
+           
               <span>GREAT BANK</span>
             </a>
             <p>A Portuguese banking technology company, headquartered in Lisbon.</p>
