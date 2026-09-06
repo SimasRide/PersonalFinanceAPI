@@ -1,7 +1,7 @@
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,14 +31,9 @@ public class AuthController : ControllerBase
         if (await _users.FindByEmailAsync(email) is not null)
             return Conflict(new { message = "Já existe uma conta com este email." });
 
-        var user = new ApplicationUser
-        {
-            UserName = email,
-            Email = email,
-            DisplayName = request.DisplayName.Trim()
-        };
-
+        var user = new ApplicationUser { UserName = email, Email = email, DisplayName = request.DisplayName.Trim() };
         var result = await _users.CreateAsync(user, request.Password);
+
         if (!result.Succeeded)
             return BadRequest(new { message = "Não foi possível criar a conta.", errors = result.Errors.Select(e => e.Description) });
 
@@ -58,11 +53,9 @@ public class AuthController : ControllerBase
     private AuthResponse CreateResponse(ApplicationUser user)
     {
         var expiresAt = DateTime.UtcNow.AddHours(2);
-        var key = _configuration["Jwt:Key"] ?? "development-only-key-change-before-production-2026";
-        var credentials = new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
-            SecurityAlgorithms.HmacSha256);
-
+        var key = _configuration["Jwt:Key"]
+            ?? throw new InvalidOperationException("Jwt:Key não está configurada.");
+        var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)), SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(
             issuer: _configuration["Jwt:Issuer"] ?? "FinancialOverview",
             audience: _configuration["Jwt:Audience"] ?? "FinancialOverview.Web",
@@ -75,9 +68,7 @@ public class AuthController : ControllerBase
             expires: expiresAt,
             signingCredentials: credentials);
 
-        return new AuthResponse(
-            new JwtSecurityTokenHandler().WriteToken(token),
-            expiresAt,
+        return new AuthResponse(new JwtSecurityTokenHandler().WriteToken(token), expiresAt,
             new UserResponse(user.Id, user.DisplayName, user.Email!));
     }
 }
@@ -86,10 +77,6 @@ public sealed record RegisterRequest(
     [Required, StringLength(80, MinimumLength = 2)] string DisplayName,
     [Required, EmailAddress] string Email,
     [Required, MinLength(8)] string Password);
-
-public sealed record LoginRequest(
-    [Required, EmailAddress] string Email,
-    [Required] string Password);
-
+public sealed record LoginRequest([Required, EmailAddress] string Email, [Required] string Password);
 public sealed record AuthResponse(string Token, DateTime ExpiresAt, UserResponse User);
 public sealed record UserResponse(string Id, string DisplayName, string Email);
