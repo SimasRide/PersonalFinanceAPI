@@ -1,51 +1,60 @@
 # Financial Overview
 
-Este repositório contém o backend (ASP.NET Core, C#), um frontend mínimo (React + Vite, TypeScript) e um `docker-compose.yml` para desenvolvimento com PostgreSQL.
+Aplicação de finanças pessoais com backend ASP.NET Core (.NET 10), frontend React + TypeScript e PostgreSQL.
 
-Sumário rápido
-- Backend: `WebApplication1` (C#, .NET 10, EF Core)
-- Frontend: `frontend` (React + Vite, TypeScript)
-- DB: PostgreSQL (via Docker Compose)
+## O que já está disponível
 
-Como correr localmente (sem Docker)
-1. Backend
-   - Ajusta a connection string no `appsettings.Development.json` ou utiliza variável de ambiente `ConnectionStrings__DefaultConnection`.
-   - No terminal (pasta `WebApplication1`):
-	 ```powershell
-	 dotnet run --urls "http://localhost:5287"
-	 ```
-   - Verifica `Now listening on: http://localhost:5287` na saída.
+- Registo e login com ASP.NET Core Identity
+- Autenticação JWT com expiração de 2 horas
+- Rotas da API protegidas por defeito
+- Frontend responsivo com formulários, validação e feedback de erros
+- Listagem de contas ligada à API, sem dados mock
+- Segredos fora do repositório
 
-2. Frontend
-   - Copia `frontend/.env.local.example` para `frontend/.env.local` e ajusta `VITE_API_URL` se necessário.
-   - No terminal (pasta `frontend`):
-	 ```bash
-	 npm install
-	 npm run dev
-	 ```
-   - Acede a `http://localhost:5173`.
+## Arranque com Docker
 
-Como correr com Docker Compose (recomendado para dev)
-1. Define a password do Postgres (opcional):
-   - cria um ficheiro `.env` na raiz com `POSTGRES_PASSWORD=umaSenhaSegura`.
-2. Executa:
-   ```bash
-   docker compose up --build
-   ```
-3. Acede:
-   - Frontend: http://localhost:5173
-   - Backend: http://localhost:5287/api/accounts
+1. Copia `.env.example` para `.env`.
+2. Preenche `POSTGRES_PASSWORD` e `JWT_KEY` com valores fortes.
+3. Executa:
 
-Notas de segurança rápidas
-- Não comites segredos (use `.env`, `user-secrets` ou secrets manager).
-- Não uses `ASPNETCORE_ENVIRONMENT=Development` em produção.
-- Implementa autenticação/autorizações antes de publicar a API.
-- O middleware global de erro devolve mensagens genéricas para evitar exposição de detalhes internos.
+```bash
+docker compose up --build
+```
 
-Próximos passos sugeridos (roadmap)
-1. Autenticação (JWT + Identity)
-2. CRUD completo de transações e categorias
-3. Dashboard com gráficos
-4. Testes (unit + integração)
-5. CI/CD e Docker image publish
+Frontend: http://localhost:5173  
+Backend: http://localhost:5287
 
+## Arranque local
+
+Na pasta `WebApplication1`, guarda a configuração fora do Git:
+
+```powershell
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=financialoverview;Username=postgres;Password=<a-tua-password>"
+dotnet user-secrets set "Jwt:Key" "<uma-chave-aleatoria-com-pelo-menos-32-caracteres>"
+```
+
+Como o Identity adiciona tabelas de utilizadores, cria e aplica a migração:
+
+```powershell
+dotnet ef migrations add AddIdentity
+dotnet ef database update
+dotnet run --urls "http://localhost:5287"
+```
+
+Depois, na pasta `frontend`:
+
+```bash
+npm install
+npm run dev
+```
+
+## Endpoints de autenticação
+
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+
+Os restantes endpoints exigem o header `Authorization: Bearer <token>`.
+
+## Segurança
+
+Nunca publiques `.env`, connection strings ou chaves JWT. A credencial PostgreSQL anteriormente presente no histórico deve ser substituída na base de dados antes de qualquer publicação.
