@@ -3,5 +3,4 @@
     <File Path=".env" />
     <File Path="docker-compose.yml" />
   </Folder>
-  <Project Path="WebApplication1/WebApplication1.csproj" />
 </Solution>
