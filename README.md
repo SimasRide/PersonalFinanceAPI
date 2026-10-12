@@ -1,4 +1,4 @@
-<------------------------------------------------------------FINANCIAL OVERVIEW-------------------------------------------------->
+<------------------------------------------------------------FINANCIAL OVERVIEW----------------------------------------------->
 A personal finance application currently under development, featuring an ASP.NET Core/C# backend, a React/TypeScript frontend, and a PostgreSQL database.
 
 Local Access:
