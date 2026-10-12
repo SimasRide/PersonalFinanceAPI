@@ -9,8 +9,6 @@ const [username, setUsername] = useState('');
   
  function handleSubmit(event: FormEvent<HTMLFormElement>) {
   event.preventDefault();
-
-  alert (`Formulario submetido para ${username}. Ainda não foi criada uma conta.`);
   } 
  return (
    <form onSubmit={handleSubmit}>

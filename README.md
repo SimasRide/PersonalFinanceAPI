@@ -1,51 +1,28 @@
 # Financial Overview
 
-Este repositório contém o backend (ASP.NET Core, C#), um frontend mínimo (React + Vite, TypeScript) e um `docker-compose.yml` para desenvolvimento com PostgreSQL.
+This repository contains an ASP.NET Core/C# backend, a minimal React + Vite/TypeScript frontend, and a `docker-compose.yml` file for local development with PostgreSQL.
 
-Sumário rápido
-- Backend: `WebApplication1` (C#, .NET 10, EF Core)
-- Frontend: `frontend` (React + Vite, TypeScript)
-- DB: PostgreSQL (via Docker Compose)
+ Quick Overview
 
-Como correr localmente (sem Docker)
-1. Backend
-   - Ajusta a connection string no `appsettings.Development.json` ou utiliza variável de ambiente `ConnectionStrings__DefaultConnection`.
-   - No terminal (pasta `WebApplication1`):
-	 ```powershell
-	 dotnet run --urls "http://localhost:5287"
-	 ```
-   - Verifica `Now listening on: http://localhost:5287` na saída.
+- Backend: `WebApplication1` — C#, .NET 10, and Entity Framework Core.
+- Frontend: `frontend` — React, Vite, and TypeScript.
+- Database: PostgreSQL, running through Docker Compose.
 
-2. Frontend
-   - Copia `frontend/.env.local.example` para `frontend/.env.local` e ajusta `VITE_API_URL` se necessário.
-   - No terminal (pasta `frontend`):
-	 ```bash
-	 npm install
-	 npm run dev
-	 ```
-   - Acede a `http://localhost:5173`.
+## Security Notes
 
-Como correr com Docker Compose (recomendado para dev)
-1. Define a password do Postgres (opcional):
-   - cria um ficheiro `.env` na raiz com `POSTGRES_PASSWORD=umaSenhaSegura`.
-2. Executa:
-   ```bash
-   docker compose up --build
-   ```
-3. Acede:
-   - Frontend: http://localhost:5173
-   - Backend: http://localhost:5287/api/accounts
+- Do not commit secrets. Store them in an untracked `.env` file, .NET User Secrets, or a secrets manager.
+- Do not use `ASPNETCORE_ENVIRONMENT=Development` in production.
+- Implement authentication and authorization before publishing the API.
+- The global error-handling middleware returns generic messages to avoid exposing internal details.
 
-Notas de segurança rápidas
-- Não comites segredos (use `.env`, `user-secrets` ou secrets manager).
-- Não uses `ASPNETCORE_ENVIRONMENT=Development` em produção.
-- Implementa autenticação/autorizações antes de publicar a API.
-- O middleware global de erro devolve mensagens genéricas para evitar exposição de detalhes internos.
+## ⏳ In Progress — Roadmap
 
-Próximos passos sugeridos (roadmap)
-1. Autenticação (JWT + Identity)
-2. CRUD completo de transações e categorias
-3. Dashboard com gráficos
-4. Testes (unit + integração)
-5. CI/CD e Docker image publish
+1. Authentication with JWT and ASP.NET Core Identity.
+2. Full CRUD operations for transactions and categories.
+3. A dashboard with charts.
+4. Unit and integration tests.
+5. CI/CD and Docker image publishing.
 
+## Development Instructions
+
+See [Instructions](Instructions.md) for keyboard shortcuts and useful commands.

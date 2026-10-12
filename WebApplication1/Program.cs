@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using static System.Net.Mime.MediaTypeNames;
 using WebApplication1.Data;
 using System.Text.Json.Serialization;
-
+using Microsoft.AspNetCore.Identity;
+using WebApplication1.Models;
+using Microsoft.Extensions.Options;
 // Nome da política de CORS usada para permitir chamadas do frontend
 const string FrontendCorsPolicy = "FrontendCorsPolicy";
 
@@ -38,7 +41,19 @@ var connectionString =
 
 // Regista o DbContext da aplicação usando PostgreSQL (Npgsql)
 builder.Services.AddDbContext<AppDBContext>(options =>
-    options.UseNpgsql(connectionString)); 
+    options.UseNpgsql(connectionString));
+
+builder.Services.AddIdentityCore<ApplicationUser>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+
+    options.Password.RequiredLength = 8;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+})
+.AddEntityFrameworkStores<AppDBContext>();
 
 // Constrói a aplicação com os serviços configurados
 var app = builder.Build();

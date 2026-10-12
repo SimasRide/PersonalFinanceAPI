@@ -37,27 +37,8 @@ namespace WebApplication1.Controllers;
 [Route("api/[controller]")]
 public class AccountsController : ControllerBase
 {
-    /*
-     Resumo das alterações neste controller:
-     - Adicionados endpoints PUT /api/accounts/{id} e DELETE /api/accounts/{id}
-       para completar o CRUD de contas.
-     - O PUT procura a conta pelo id, valida os dados (ModelState), aplica
-       as alterações do DTO e grava no banco (SaveChangesAsync).
-     - O DELETE remove a conta encontrada e grava as alterações.
-     - Os métodos devolvem códigos HTTP apropriados: 400, 404, 204, 500.
 
-     Observações relacionadas ao projeto:
-     - Os enums (AccountType) estão configurados para serem serializados
-       como strings no JSON (configuração em Program.cs).
-     - A propriedade Transactions em Account é pública para que o EF
-       possa mapear a relação 1:N corretamente.
-     - Testa estes endpoints com Postman/Insomnia ou via browser (GET).
-    */
-    
-    // readonly significa que a referência só pode ser atribuída
-    // durante a declaração ou dentro do construtor.
-    
-    // O prefixo _db é uma convenção para campos privados.
+
     private readonly AppDBContext _dbContext;
 
 
@@ -78,24 +59,14 @@ public class AccountsController : ControllerBase
     // GET /api/accounts
     [HttpGet]
 
-    // async permite que o método aguarde operações da base de dados
-    // sem bloquear a aplicação.
 
-    // Task representa uma operação assíncrona.
-
-    // List<AccountResponseDto> representa os dados esperados
-    // quando a operação termina com sucesso.
     public async Task<ActionResult<List<AccountResponseDto>>> GetAll()
 
     {
         // _dbContext.Accounts representa a tabela Accounts
         // existente no PostgreSQL.
         var accounts = await _dbContext.Accounts
-
-            // Informa o Entity Framework de que os resultados são
-            // apenas para consulta e não serão alterados
-            // Isto reduz o trabalho de memória e melhora o desempenho
-            // dos pedidos que apenas leem dados.
+        
             .AsNoTracking()
 
             // Select converte cada Account da base de dados

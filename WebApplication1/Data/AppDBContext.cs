@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
 
 namespace WebApplication1.Data;
 
 // DbContext da aplicação: representa a ligação entre modelos C# e a BD
-public class AppDBContext : DbContext
+public class AppDBContext : IdentityDbContext<ApplicationUser>
 {
     // Construtor padrão que recebe opções (connection string, provider, etc.)
     public AppDBContext(DbContextOptions<AppDBContext> options)
