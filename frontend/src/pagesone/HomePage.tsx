@@ -1,5 +1,5 @@
 import {Link, NavLink} from "react-router-dom";
-// Navegar para pagina selecionada7
+
 function NavBar() {
     return(
         <nav aria-label="Main navigation">

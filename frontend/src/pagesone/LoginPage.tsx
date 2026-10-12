@@ -1,24 +1,26 @@
-function LoginPage() {
-  return (
-    <main className="auth-layout">
-      <section className="auth-image">
-        <div className="auth-image-content">
-          <span>Financial Overview</span>
-          <h2>
-            Your finances.
-            <br />
-            Clearly understood.
-          </h2>
-          <p>Manage your financial life with confidence.</p>
-        </div>
-      </section>
+import {useState} from 'react';
+import {FormEvent} from 'react';
 
-      <section className="auth-panel">
-        <h1>Log in</h1>
-        {/* Formulário de login */}
-      </section>
-    </main>
+function LoginPage() {
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+  
+ function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+alert(`Formulario submetido para ${email}. Ainda não foi criada uma conta.`);
+}
+  return (
+    <form onSubmit={handleSubmit}>
+      <h1>Login</h1>
+
+      <label htmlFor="username">Username:</label>
+      <input type="text" id="username" name="username" required />
+      <label htmlFor="password">Password:</label>
+
+      <input type="password" id="password" name="password" required />
+    
+      <button type="submit">Login</button>
+    </form>
   );
 }
-
 export default LoginPage;
