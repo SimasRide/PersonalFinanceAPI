@@ -1,21 +1,14 @@
 <------------------------------------------------------------FINANCIAL OVERVIEW------------------------------------------------------------->
+A personal finance application currently under development, featuring an ASP.NET Core/C# backend, a React/TypeScript frontend, and a PostgreSQL database.
 
-Aplicação de finanças pessoais em desenvolvimento, com backend em ASP.NET Core/C#, frontend em React/TypeScript e PostgreSQL.
-
-
-Acesso local:
-
+Local Access:
 - Frontend: http://localhost:5173
-- API de contas: http://localhost:5287/api/accounts
+- Accounts API: http://localhost:5287/api/accounts
 
+Workflow:
+Main page, login and registration, transactions, and financial dashboard.
 
-
-Fluxo de trabalho :
-
-Página principal, login e registo, transações e dashboard financeiro.
-
- Referências
-
-- [React — JSX e componentes](https://react.dev/learn/writing-markup-with-jsx)
-- [React Router — Navegação com Link](https://reactrouter.com/6.30.1/components/link)
-- [React Router — Configuração de rotas](https://reactrouter.com/6.30.1/components/routes)
+References:
+- [React — JSX and Components](https://react.dev/learn/writing-markup-with-jsx)
+- [React Router — Navigating with Link](https://reactrouter.com/6.30.1/components/link)
+- [React Router — Route Configuration](https://reactrouter.com/6.30.1/components/routes)
