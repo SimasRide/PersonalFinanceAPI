@@ -26,7 +26,7 @@ The project also provides practical experience in full-stack development, connec
 
 Users will access the main page, create an account or log in, and then manage their accounts and transactions. The dashboard will provide an overview of their financial activity.
 
- Development Status
+ Development Status - ⏳ IN PROGRESS... 🚧
 
 The login and registration forms have been created. The next stage is to connect them to the backend and database, implement authentication, and verify that user accounts are stored correctly.
 
