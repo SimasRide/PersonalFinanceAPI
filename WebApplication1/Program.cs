@@ -22,7 +22,8 @@ builder.Services.AddCors(options =>
         policy
             .WithOrigins("http://localhost:5173")
             .AllowAnyHeader()   // Permitir qualquer header nas requisições
-            .AllowAnyMethod();  // Permitir qualquer método HTTP (GET, POST, ...)
+            .AllowAnyMethod()  // Permitir qualquer método HTTP (GET, POST, ...)
+            .AllowCredentials(); // Permitir credenciais 
     });
 });
 
@@ -53,7 +54,24 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
     options.Password.RequireDigit = false;
     options.Password.RequireNonAlphanumeric = false;
 })
-.AddEntityFrameworkStores<AppDBContext>();
+.AddEntityFrameworkStores<AppDBContext>()
+.AddSignInManager();
+
+// Regista os cookies utilizados pelo Identity para manter a sessão.
+builder.Services
+    .AddAuthentication(IdentityConstants.ApplicationScheme)
+    .AddIdentityCookies();
+
+builder.Services.AddAuthorization();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+
+    // Permite o teste local por HTTP. Em produção, usa HTTPS.
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+});
 
 // Constrói a aplicação com os serviços configurados
 var app = builder.Build();
@@ -69,6 +87,8 @@ app.MapGet("/Dashboard", () => Results.Ok(new
     message = "Financial Overview API is running"
 }));
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

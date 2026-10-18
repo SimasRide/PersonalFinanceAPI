@@ -4,9 +4,13 @@ user-secrets set: guarda a configuração de desenvolvimento fora do repositóri
 ConnectionStrings:DefaultConnection: nome da ligação que o teu backend procura.
 Host=localhost;Port=5432: 
 
+# Editor docker
+docker exec -it financialoverview-db sh
+
+# pSQL
+psql -U "$POSTGRES_USER" -d financialoverview
 
 
-Invoke-RestMethod -Uri "http://localhost:5287/api/accounts" -Method Get
 
 - Invoke-RestMethod: envia um pedido HTTP e interpreta a resposta.
 - -Uri: indica o endereço do endpoint de contas.
